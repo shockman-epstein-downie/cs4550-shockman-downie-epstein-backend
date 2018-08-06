@@ -57,4 +57,10 @@ public class UserService {
 	public void deleteUser(@PathVariable("userId") int id) {
 		repository.deleteById(id);
 	}
+	
+	@GetMapping("/api/profile")
+	public User getProfile(HttpSession session) {
+		User currentUser = (User) session.getAttribute("currentUser");
+		return currentUser;
+	}
 }
