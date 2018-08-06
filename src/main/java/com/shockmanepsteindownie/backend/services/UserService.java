@@ -74,6 +74,23 @@ public class UserService {
 		if (currentUser == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
-		return ResponseEntity.ok(currentUser);
+		
+		Optional<User> opt = repository.findById(currentUser.getId());
+		if (opt.isPresent()) {
+			User user = opt.get();
+			session.setAttribute("currentUser", user);
+			return ResponseEntity.ok(user);
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+	}
+	
+	@DeleteMapping("/api/profile")
+	public void deleteProfile(HttpSession session) {
+		User currentUser = (User) session.getAttribute("currentUser");
+		if (currentUser != null) {
+			repository.deleteById(currentUser.getId());
+			session.setAttribute("currentUser", null);
+		}
 	}
 }
