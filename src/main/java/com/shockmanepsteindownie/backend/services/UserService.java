@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,15 +34,19 @@ public class UserService {
 	}
 	
 	@PostMapping("/api/login")
-	public User login(@RequestBody User user, HttpSession session) {
+	public ResponseEntity<User> login(@RequestBody User user, HttpSession session) {
 		user = repository.findUserByCredentials(user.getUsername(), user.getPassword());
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		}
+	
 		session.setAttribute("currentUser", user);
-		return user;
+		return ResponseEntity.ok(user);
 	}
 	
 	@GetMapping("/api/user")
-	public List<User> findAllUsers() {
-		return (List<User>) repository.findAll();
+	public ResponseEntity<List<User>> findAllUsers() {
+		return ResponseEntity.ok((List<User>) repository.findAll());
 	}
 	
 	@PostMapping("/api/logout")
@@ -49,8 +55,12 @@ public class UserService {
 	}
 	
 	@GetMapping("/api/user/{userId}")
-	public Optional<User> findUserById(@PathVariable("userId") int id) {
-		return repository.findById(id);
+	public ResponseEntity<User> findUserById(@PathVariable("userId") int id) {
+		Optional<User> user = repository.findById(id);
+		if (user.isPresent()) {
+			return ResponseEntity.ok(user.get());
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 	
 	@DeleteMapping("/api/user/{userId}")
@@ -59,8 +69,11 @@ public class UserService {
 	}
 	
 	@GetMapping("/api/profile")
-	public User getProfile(HttpSession session) {
+	public ResponseEntity<User> getProfile(HttpSession session) {
 		User currentUser = (User) session.getAttribute("currentUser");
-		return currentUser;
+		if (currentUser == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		}
+		return ResponseEntity.ok(currentUser);
 	}
 }
