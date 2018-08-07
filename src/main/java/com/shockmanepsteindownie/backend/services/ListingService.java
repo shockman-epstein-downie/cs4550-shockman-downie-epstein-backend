@@ -79,6 +79,7 @@ public class ListingService {
 		listing.setCreated(now);
 		listing.setModified(now);
 		listing.setOwner(owner);
+		listing.setOwnerId(owner.getId());
 		Listing newListing = listingRepository.save(listing);
 		return ResponseEntity.ok(newListing);
 	}
@@ -97,6 +98,12 @@ public class ListingService {
 		if (listings == null) {
 			listings = new ArrayList<Listing>();
 		}
+		return ResponseEntity.ok(listings);
+	}
+	
+	@PostMapping("/api/listing/search")
+	public ResponseEntity<List<Listing>> searchListingLike(@RequestBody String titleQuery) {
+		List<Listing> listings = listingRepository.searchTitleLike(titleQuery);
 		return ResponseEntity.ok(listings);
 	}
 }

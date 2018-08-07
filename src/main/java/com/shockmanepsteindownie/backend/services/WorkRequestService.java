@@ -79,6 +79,7 @@ public class WorkRequestService {
 		workRequest.setCreated(now);
 		workRequest.setModified(now);
 		workRequest.setOwner(owner);
+		workRequest.setOwnerId(owner.getId());
 		WorkRequest newWorkRequest = workRequestRepository.save(workRequest);
 		return ResponseEntity.ok(newWorkRequest);
 	}

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,9 +22,9 @@ public class Listing {
 	private String title;
 	@Column(length=5000)
 	private String description;
-	@JsonIgnore
 	@ManyToOne
 	private User owner;
+	private int _ownerId;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -64,6 +65,10 @@ public class Listing {
 	public void setModified(Date modified) {
 		this.modified = modified;
 	}
-	
-	
+	public int getOwnerId() {
+		return _ownerId;
+	}
+	public void setOwnerId(int ownerId) {
+		this._ownerId = ownerId;
+	}
 }

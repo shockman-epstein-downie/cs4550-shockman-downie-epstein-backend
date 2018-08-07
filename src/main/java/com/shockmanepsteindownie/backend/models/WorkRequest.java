@@ -26,6 +26,7 @@ public class WorkRequest {
 	@JsonIgnore
 	@ManyToOne
 	private User owner;
+	private int _ownerId;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -66,6 +67,10 @@ public class WorkRequest {
 	public void setModified(Date modified) {
 		this.modified = modified;
 	}
-
-
+	public int getOwnerId() {
+		return _ownerId;
+	}
+	public void setOwnerId(int ownerId) {
+		this._ownerId = ownerId;
+	}
 }
