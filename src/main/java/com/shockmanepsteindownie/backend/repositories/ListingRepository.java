@@ -10,6 +10,6 @@ import com.shockmanepsteindownie.backend.models.Listing;
 
 public interface ListingRepository extends CrudRepository<Listing, Integer>{
 
-	@Query("SELECT l.title FROM Listing l WHERE UPPER(l.title) LIKE CONCAT('%',UPPER(:title),'%')")
+	@Query("SELECT l FROM Listing l WHERE UPPER(l.title) LIKE CONCAT('%',UPPER(:title),'%')")
 	public List<Listing> searchTitleLike(@Param("title") String title);
 }

@@ -22,8 +22,8 @@ public class Listing {
 	private String title;
 	@Column(length=5000)
 	private String description;
-	@ManyToOne
 	@JsonIgnore
+	@ManyToOne
 	private User owner;
 	private int _ownerId;
 	@Temporal(TemporalType.TIMESTAMP)
