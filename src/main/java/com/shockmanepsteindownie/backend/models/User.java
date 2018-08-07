@@ -1,13 +1,17 @@
 package com.shockmanepsteindownie.backend.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -21,6 +25,10 @@ public class User {
 	private String role;
 	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
+	@OneToMany(mappedBy="owner")
+	private List<WorkRequest> workRequests;
+	@OneToMany(mappedBy="owner")
+	private List<Listing> listings;
 	
 	public int getId() {
 		return id;
@@ -57,6 +65,18 @@ public class User {
 	}
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+	public List<WorkRequest> getWorkRequests() {
+		return workRequests;
+	}
+	public void setWorkRequests(List<WorkRequest> workRequests) {
+		this.workRequests = workRequests;
+	}
+	public List<Listing> getListings() {
+		return listings;
+	}
+	public void setListings(List<Listing> listings) {
+		this.listings = listings;
 	}
 	
 }
