@@ -23,6 +23,7 @@ public class Listing {
 	@Column(length=5000)
 	private String description;
 	@ManyToOne
+	@JsonIgnore
 	private User owner;
 	private int _ownerId;
 	@Temporal(TemporalType.TIMESTAMP)
