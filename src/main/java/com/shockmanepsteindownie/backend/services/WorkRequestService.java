@@ -22,7 +22,7 @@ import com.shockmanepsteindownie.backend.models.User;
 import com.shockmanepsteindownie.backend.repositories.WorkRequestRepository;
 import com.shockmanepsteindownie.backend.repositories.UserRepository;
 
-@CrossOrigin(origins="http://localhost:3000", allowCredentials="true")
+@CrossOrigin(origins="http://localhost:3000, https://designs-r-us.herokuapp.com", allowCredentials="true")
 @RestController
 public class WorkRequestService {
 	@Autowired
