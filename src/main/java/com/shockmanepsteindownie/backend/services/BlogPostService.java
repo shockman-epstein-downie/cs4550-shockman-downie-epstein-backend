@@ -72,7 +72,7 @@ public class BlogPostService {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 		User owner = opt.get();
-		if (!owner.getRole().equals("DESIGNER")) {
+		if (!owner.getRole().equals("ADMIN")) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
 		Date now = new Date();
