@@ -29,6 +29,8 @@ public class User {
 	private List<WorkRequest> workRequests;
 	@OneToMany(mappedBy="owner")
 	private List<Listing> listings;
+	@OneToMany(mappedBy="owner")
+	private List<BlogPost> blogPosts;
 	
 	public int getId() {
 		return id;
@@ -78,5 +80,10 @@ public class User {
 	public void setListings(List<Listing> listings) {
 		this.listings = listings;
 	}
-	
+	public List<BlogPost> getBlogPosts() {
+		return blogPosts;
+	}
+	public void setBlogPosts(List<BlogPost> blogPosts) {
+		this.blogPosts = blogPosts;
+	}
 }
