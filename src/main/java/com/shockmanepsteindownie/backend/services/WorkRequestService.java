@@ -100,4 +100,10 @@ public class WorkRequestService {
 		}
 		return ResponseEntity.ok(workRequests);
 	}
+	
+	@PostMapping("/api/workRequest/search")
+	public ResponseEntity<List<WorkRequest>> searchListingLike(@RequestBody String titleQuery) {
+		List<WorkRequest> workRequests = workRequestRepository.searchTitleLike(titleQuery);
+		return ResponseEntity.ok(workRequests);
+	}
 }
