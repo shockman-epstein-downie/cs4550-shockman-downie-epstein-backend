@@ -34,6 +34,10 @@ public class User {
 	@OneToMany(mappedBy="owner")
 	@JsonIgnore
 	private List<Comment> comments;
+	@OneToMany(mappedBy="sender")
+	private List<Message> sentMessages;
+	@OneToMany(mappedBy="recipient")
+	private List<Message> receivedMessages;
 	
 	public int getId() {
 		return id;
@@ -94,5 +98,17 @@ public class User {
 	}
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+	public List<Message> getSentMessages() {
+		return sentMessages;
+	}
+	public void setSentMessages(List<Message> sentMessages) {
+		this.sentMessages = sentMessages;
+	}
+	public List<Message> getReceivedMessages() {
+		return receivedMessages;
+	}
+	public void setReceivedMessages(List<Message> receivedMessages) {
+		this.receivedMessages = receivedMessages;
 	}
 }
