@@ -31,6 +31,8 @@ public class WorkRequest {
 	private Date created;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modified;
+	@OneToMany(mappedBy="workRequest")
+	private List<Comment> comments;
 	public int getId() {
 		return id;
 	}
@@ -72,5 +74,11 @@ public class WorkRequest {
 	}
 	public void setOwnerId(int ownerId) {
 		this._ownerId = ownerId;
+	}
+	public List<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 }

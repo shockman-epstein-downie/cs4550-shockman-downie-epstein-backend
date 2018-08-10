@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shockmanepsteindownie.backend.models.WorkRequest;
+import com.shockmanepsteindownie.backend.models.Comment;
 import com.shockmanepsteindownie.backend.models.User;
-import com.shockmanepsteindownie.backend.repositories.WorkRequestRepository;
+import com.shockmanepsteindownie.backend.models.WorkRequest;
+import com.shockmanepsteindownie.backend.repositories.CommentRepository;
 import com.shockmanepsteindownie.backend.repositories.UserRepository;
+import com.shockmanepsteindownie.backend.repositories.WorkRequestRepository;
 
 @CrossOrigin(origins={"http://localhost:3000", "https://designs-r-us.herokuapp.com"}, allowCredentials="true")
 @RestController
@@ -30,6 +34,9 @@ public class WorkRequestService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	CommentRepository commentRepository;
 	
 	@GetMapping("/api/workRequest")
 	public ResponseEntity<List<WorkRequest>> findAllWorkRequests() {
@@ -105,5 +112,19 @@ public class WorkRequestService {
 	public ResponseEntity<List<WorkRequest>> searchListingLike(@RequestBody String titleQuery) {
 		List<WorkRequest> workRequests = workRequestRepository.searchTitleLike(titleQuery);
 		return ResponseEntity.ok(workRequests);
+	}
+	
+	@PostMapping("/api/workRequest/{wrid}/comment")
+	public ResponseEntity<Comment> addComment(@PathVariable("wrid") int wrid, @RequestBody Comment comment, HttpSession session) {
+		User user = (User) session.getAttribute("currentUser");
+		Optional<WorkRequest> opt = workRequestRepository.findById(wrid);
+		if (user == null || !opt.isPresent()) {
+			return ResponseEntity.badRequest().body(null);
+		}
+		comment.setWorkRequest(opt.get());
+		comment.setOwner(user);
+		comment.setCreated(new Date());
+		Comment newComment = commentRepository.save(comment);
+		return ResponseEntity.ok(newComment);
 	}
 }

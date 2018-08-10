@@ -31,6 +31,9 @@ public class User {
 	private List<Listing> listings;
 	@OneToMany(mappedBy="owner")
 	private List<BlogPost> blogPosts;
+	@OneToMany(mappedBy="owner")
+	@JsonIgnore
+	private List<Comment> comments;
 	
 	public int getId() {
 		return id;
@@ -85,5 +88,11 @@ public class User {
 	}
 	public void setBlogPosts(List<BlogPost> blogPosts) {
 		this.blogPosts = blogPosts;
+	}
+	public List<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 }

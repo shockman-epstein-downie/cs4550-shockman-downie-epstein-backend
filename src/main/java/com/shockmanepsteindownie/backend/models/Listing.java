@@ -1,14 +1,15 @@
 package com.shockmanepsteindownie.backend.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -30,6 +31,8 @@ public class Listing {
 	private Date created;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modified;
+	@OneToMany(mappedBy="listing")
+	private List<Comment> comments;
 	public int getId() {
 		return id;
 	}
@@ -71,5 +74,11 @@ public class Listing {
 	}
 	public void setOwnerId(int ownerId) {
 		this._ownerId = ownerId;
+	}
+	public List<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 }
