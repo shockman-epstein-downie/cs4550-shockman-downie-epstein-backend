@@ -30,6 +30,7 @@ public class User {
 	@OneToMany(mappedBy="owner")
 	private List<Listing> listings;
 	@OneToMany(mappedBy="owner")
+	@JsonIgnore
 	private List<BlogPost> blogPosts;
 	@OneToMany(mappedBy="owner")
 	@JsonIgnore

@@ -13,4 +13,6 @@ public interface BlogPostRepository extends CrudRepository<BlogPost, Integer>{
 	@Query("SELECT bp FROM BlogPost bp WHERE UPPER(bp.title) LIKE CONCAT('%',UPPER(:title),'%')")
 	public List<BlogPost> searchTitleLike(@Param("title") String title);
 
+	@Query("SELECT bp FROM BlogPost bp WHERE bp._ownerId=:uid")
+	public List<BlogPost> getUserBlogPosts(@Param("uid") int uid);
 }

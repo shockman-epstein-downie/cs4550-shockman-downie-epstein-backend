@@ -16,12 +16,12 @@ import com.shockmanepsteindownie.backend.models.Comment;
 import com.shockmanepsteindownie.backend.models.User;
 import com.shockmanepsteindownie.backend.repositories.CommentRepository;
 
-@CrossOrigin(origins={"http://localhost:3000", "https://designs-r-us.herokuapp.com"}, allowCredentials="true")
+@CrossOrigin(origins = { "http://localhost:3000", "https://designs-r-us.herokuapp.com" }, allowCredentials = "true")
 @RestController
 public class CommentService {
 	@Autowired
 	CommentRepository commentRepository;
-	
+
 	@DeleteMapping("/api/comment/{cid}")
 	public ResponseEntity<Boolean> deleteComment(@PathVariable("cid") int cid, HttpSession session) {
 		User currentUser = (User) session.getAttribute("currentUser");
