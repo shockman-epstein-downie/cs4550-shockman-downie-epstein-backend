@@ -28,6 +28,7 @@ public class User {
 	@OneToMany(mappedBy="owner")
 	private List<WorkRequest> workRequests;
 	@OneToMany(mappedBy="owner")
+	@JsonIgnore
 	private List<Listing> listings;
 	@OneToMany(mappedBy="owner")
 	@JsonIgnore

@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shockmanepsteindownie.backend.models.BlogPost;
+import com.shockmanepsteindownie.backend.models.Listing;
 import com.shockmanepsteindownie.backend.models.User;
 import com.shockmanepsteindownie.backend.repositories.BlogPostRepository;
+import com.shockmanepsteindownie.backend.repositories.ListingRepository;
 import com.shockmanepsteindownie.backend.repositories.UserRepository;
 
 @CrossOrigin(origins={"http://localhost:3000", "https://designs-r-us.herokuapp.com"}, allowCredentials="true")
@@ -30,6 +32,9 @@ public class UserService {
 	
 	@Autowired
 	BlogPostRepository blogPostRepository;
+	
+	@Autowired
+	ListingRepository listingRepository;
 	
 	@PostMapping("/api/user")
 	public User createUser(@RequestBody User user, HttpSession session) {
@@ -107,5 +112,15 @@ public class UserService {
 		}
 		List<BlogPost> blogPosts = blogPostRepository.getUserBlogPosts(currentUser.getId());
 		return ResponseEntity.ok(blogPosts);
+	}
+	
+	@GetMapping("/api/profile/listing")
+	public ResponseEntity<List<Listing>> getProfileListings(HttpSession session) {
+		User currentUser = (User) session.getAttribute("currentUser");
+		if (currentUser == null) {
+			return ResponseEntity.badRequest().body(null);
+		}
+		List<Listing> listings = listingRepository.getUserListings(currentUser.getId());
+		return ResponseEntity.ok(listings);
 	}
 }
