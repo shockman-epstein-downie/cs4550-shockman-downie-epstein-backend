@@ -52,14 +52,13 @@ public class MessageService {
 		return ResponseEntity.ok(true);
 	}
 	
-	@PostMapping("/api/profile/message/{uid}")
-	public ResponseEntity<Message> sendMessage(@PathVariable("uid") int recipientId, @RequestBody Message message, HttpSession session) {
+	@PostMapping("/api/profile/message/{username}")
+	public ResponseEntity<Message> sendMessage(@PathVariable("username") String recipientUsername, @RequestBody Message message, HttpSession session) {
 		User currentUser = (User) session.getAttribute("currentUser");
-		Optional<User> opt = userRepository.findById(recipientId);
-		if (currentUser == null || !opt.isPresent()) {
+		User recipient = userRepository.findUserByCredentials(recipientUsername);
+		if (currentUser == null || recipient == null) {
 			return ResponseEntity.badRequest().body(null);
 		}
-		User recipient = opt.get();
 		message.setCreated(new Date());
 		message.setRecipient(recipient);
 		message.setRecipientId(recipient.getId());
