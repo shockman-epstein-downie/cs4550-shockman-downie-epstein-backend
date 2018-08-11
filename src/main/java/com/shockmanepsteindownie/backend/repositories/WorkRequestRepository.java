@@ -12,4 +12,7 @@ public interface WorkRequestRepository extends CrudRepository<WorkRequest, Integ
 	
 	@Query("SELECT wr FROM WorkRequest wr WHERE UPPER(wr.title) LIKE CONCAT('%',UPPER(:title),'%')")
 	public List<WorkRequest> searchTitleLike(@Param("title") String title);
+	
+	@Query("SELECT wr FROM WorkRequest wr WHERE wr._ownerId=:uid")
+	public List<WorkRequest> getUserWorkRequests(@Param("uid") int uid);
 }

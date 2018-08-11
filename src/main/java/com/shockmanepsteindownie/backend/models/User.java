@@ -26,6 +26,7 @@ public class User {
 	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
 	@OneToMany(mappedBy="owner")
+	@JsonIgnore
 	private List<WorkRequest> workRequests;
 	@OneToMany(mappedBy="owner")
 	@JsonIgnore
