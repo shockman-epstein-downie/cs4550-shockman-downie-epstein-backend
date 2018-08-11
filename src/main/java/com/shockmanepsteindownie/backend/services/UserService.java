@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,8 @@ public class UserService {
 		if (existingUser != null) {
 			return ResponseEntity.badRequest().body(null);
 		}
+		// hash password
+		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		User currentUser = repository.save(user);
 		session.setAttribute("currentUser", currentUser);
 		return ResponseEntity.ok(currentUser);
@@ -39,13 +42,14 @@ public class UserService {
 	
 	@PostMapping("/api/login")
 	public ResponseEntity<User> login(@RequestBody User user, HttpSession session) {
-		user = repository.findUserByCredentials(user.getUsername(), user.getPassword());
-		if (user == null) {
+		User dbUser = repository.findUserByCredentials(user.getUsername());
+		boolean correctPassword = BCrypt.checkpw(user.getPassword(), dbUser.getPassword());
+		if (user == null || !correctPassword) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 	
-		session.setAttribute("currentUser", user);
-		return ResponseEntity.ok(user);
+		session.setAttribute("currentUser", dbUser);
+		return ResponseEntity.ok(dbUser);
 	}
 	
 	@GetMapping("/api/user")
