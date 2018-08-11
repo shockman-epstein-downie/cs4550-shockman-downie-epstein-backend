@@ -30,7 +30,7 @@ public class CommentService {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
 		}
 		Comment comment = opt.get();
-		if (comment.getOwner().getId() != currentUser.getId() || !currentUser.getRole().equals("ADMIN")) {
+		if (comment.getOwner().getId() != currentUser.getId() && !currentUser.getRole().equals("ADMIN")) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
 		}
 		commentRepository.deleteById(cid);
