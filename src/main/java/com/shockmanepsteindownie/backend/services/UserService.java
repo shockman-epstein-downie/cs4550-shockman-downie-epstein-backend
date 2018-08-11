@@ -42,10 +42,14 @@ public class UserService {
 	WorkRequestRepository workRequestRepository;
 	
 	@PostMapping("/api/user")
-	public User createUser(@RequestBody User user, HttpSession session) {
+	public ResponseEntity<User> createUser(@RequestBody User user, HttpSession session) {
+		User existingUser = repository.findUserByCredentials(user.getUsername());
+		if (existingUser != null) {
+			return ResponseEntity.badRequest().body(null);
+		}
 		User currentUser = repository.save(user);
 		session.setAttribute("currentUser", currentUser);
-		return currentUser;
+		return ResponseEntity.ok(currentUser);
 	}
 	
 	@PostMapping("/api/login")
