@@ -62,6 +62,8 @@ public class ListingService {
 		Listing dbListing = opt.get();
 		dbListing.setTitle(listing.getTitle());
 		dbListing.setDescription(listing.getDescription());
+		dbListing.setRate(listing.getRate());
+		dbListing.setImageSrcs(listing.getImageSrcs());
 		dbListing.setModified(now);
 		Listing newListing = listingRepository.save(dbListing);
 		return ResponseEntity.ok(newListing);
