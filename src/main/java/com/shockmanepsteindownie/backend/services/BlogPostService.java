@@ -62,6 +62,7 @@ public class BlogPostService {
 		BlogPost dbBlogPost = opt.get();
 		dbBlogPost.setTitle(blogPost.getTitle());
 		dbBlogPost.setDescription(blogPost.getDescription());
+		dbBlogPost.setImageSrcs(blogPost.getImageSrcs());
 		dbBlogPost.setModified(now);
 		BlogPost newBlogPost = blogPostRepository.save(dbBlogPost);
 		return ResponseEntity.ok(newBlogPost);

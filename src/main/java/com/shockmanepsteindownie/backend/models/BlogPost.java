@@ -33,6 +33,8 @@ public class BlogPost {
 	private Date modified;
 	@OneToMany(mappedBy="blogPost")
 	private List<Comment> comments;
+	@Column(length=3000)
+	private String imageSrcs; //newline delimited list of image sources
 	
 	public int getId() {
 		return id;
@@ -82,4 +84,11 @@ public class BlogPost {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
+	public String getImageSrcs() {
+		return imageSrcs;
+	}
+	public void setImageSrcs(String imageSrcs) {
+		this.imageSrcs = imageSrcs;
+	}
+	
 }
