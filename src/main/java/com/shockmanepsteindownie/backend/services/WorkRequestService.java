@@ -62,6 +62,8 @@ public class WorkRequestService {
 		WorkRequest dbWorkRequest = opt.get();
 		dbWorkRequest.setTitle(workRequest.getTitle());
 		dbWorkRequest.setDescription(workRequest.getDescription());
+		dbWorkRequest.setCompensation(workRequest.getCompensation());
+		dbWorkRequest.setImageSrcs(workRequest.getImageSrcs());
 		dbWorkRequest.setModified(now);
 		WorkRequest newWorkRequest = workRequestRepository.save(dbWorkRequest);
 		return ResponseEntity.ok(newWorkRequest);

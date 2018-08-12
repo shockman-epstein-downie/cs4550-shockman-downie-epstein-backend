@@ -33,6 +33,10 @@ public class WorkRequest {
 	private Date modified;
 	@OneToMany(mappedBy="workRequest")
 	private List<Comment> comments;
+	@Column(length=3000)
+	private String imageSrcs; //newline delimited list of image sources
+	private String compensation;
+	
 	public int getId() {
 		return id;
 	}
@@ -80,5 +84,17 @@ public class WorkRequest {
 	}
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+	public String getImageSrcs() {
+		return imageSrcs;
+	}
+	public void setImageSrcs(String imageSrcs) {
+		this.imageSrcs = imageSrcs;
+	}
+	public String getCompensation() {
+		return compensation;
+	}
+	public void setCompensation(String compensation) {
+		this.compensation = compensation;
 	}
 }
