@@ -12,4 +12,7 @@ public interface ListingRepository extends CrudRepository<Listing, Integer>{
 
 	@Query("SELECT l FROM Listing l WHERE UPPER(l.title) LIKE CONCAT('%',UPPER(:title),'%')")
 	public List<Listing> searchTitleLike(@Param("title") String title);
+	
+	@Query("SELECT l FROM Listing l WHERE l._ownerId=:uid")
+	public List<Listing> getUserListings(@Param("uid") int uid);
 }

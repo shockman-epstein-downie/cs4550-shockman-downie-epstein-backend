@@ -17,8 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shockmanepsteindownie.backend.models.BlogPost;
+import com.shockmanepsteindownie.backend.models.Listing;
 import com.shockmanepsteindownie.backend.models.User;
+import com.shockmanepsteindownie.backend.models.WorkRequest;
+import com.shockmanepsteindownie.backend.repositories.BlogPostRepository;
+import com.shockmanepsteindownie.backend.repositories.ListingRepository;
 import com.shockmanepsteindownie.backend.repositories.UserRepository;
+import com.shockmanepsteindownie.backend.repositories.WorkRequestRepository;
 
 @CrossOrigin(origins={"http://localhost:3000", "https://designs-r-us.herokuapp.com"}, allowCredentials="true")
 @RestController
@@ -26,6 +32,15 @@ public class UserService {
 
 	@Autowired
 	UserRepository repository;
+	
+	@Autowired
+	BlogPostRepository blogPostRepository;
+	
+	@Autowired
+	ListingRepository listingRepository;
+	
+	@Autowired
+	WorkRequestRepository workRequestRepository;
 	
 	@PostMapping("/api/user")
 	public ResponseEntity<User> createUser(@RequestBody User user, HttpSession session) {
@@ -100,5 +115,35 @@ public class UserService {
 			repository.deleteById(currentUser.getId());
 			session.setAttribute("currentUser", null);
 		}
+	}
+	
+	@GetMapping("/api/profile/blogPost")
+	public ResponseEntity<List<BlogPost>> getProfileBlogPosts(HttpSession session) {
+		User currentUser = (User) session.getAttribute("currentUser");
+		if (currentUser == null) {
+			return ResponseEntity.badRequest().body(null);
+		}
+		List<BlogPost> blogPosts = blogPostRepository.getUserBlogPosts(currentUser.getId());
+		return ResponseEntity.ok(blogPosts);
+	}
+	
+	@GetMapping("/api/profile/listing")
+	public ResponseEntity<List<Listing>> getProfileListings(HttpSession session) {
+		User currentUser = (User) session.getAttribute("currentUser");
+		if (currentUser == null) {
+			return ResponseEntity.badRequest().body(null);
+		}
+		List<Listing> listings = listingRepository.getUserListings(currentUser.getId());
+		return ResponseEntity.ok(listings);
+	}
+	
+	@GetMapping("/api/profile/workRequest")
+	public ResponseEntity<List<WorkRequest>> getProfileWorkRequests(HttpSession session) {
+		User currentUser = (User) session.getAttribute("currentUser");
+		if (currentUser == null) {
+			return ResponseEntity.badRequest().body(null);
+		}
+		List<WorkRequest> workRequests = workRequestRepository.getUserWorkRequests(currentUser.getId());
+		return ResponseEntity.ok(workRequests);
 	}
 }

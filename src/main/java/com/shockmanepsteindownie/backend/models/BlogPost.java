@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Listing {
+public class BlogPost {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
@@ -31,11 +31,10 @@ public class Listing {
 	private Date created;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modified;
-	@OneToMany(mappedBy="listing")
+	@OneToMany(mappedBy="blogPost")
 	private List<Comment> comments;
 	@Column(length=3000)
 	private String imageSrcs; //newline delimited list of image sources
-	private String rate;
 	
 	public int getId() {
 		return id;
@@ -91,10 +90,5 @@ public class Listing {
 	public void setImageSrcs(String imageSrcs) {
 		this.imageSrcs = imageSrcs;
 	}
-	public String getRate() {
-		return rate;
-	}
-	public void setRate(String rate) {
-		this.rate = rate;
-	}
+	
 }

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +19,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shockmanepsteindownie.backend.models.Comment;
 import com.shockmanepsteindownie.backend.models.Listing;
 import com.shockmanepsteindownie.backend.models.User;
+import com.shockmanepsteindownie.backend.repositories.CommentRepository;
 import com.shockmanepsteindownie.backend.repositories.ListingRepository;
 import com.shockmanepsteindownie.backend.repositories.UserRepository;
 
@@ -30,6 +34,9 @@ public class ListingService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	CommentRepository commentRepository;
 	
 	@GetMapping("/api/listing")
 	public ResponseEntity<List<Listing>> findAllListings() {
@@ -55,6 +62,8 @@ public class ListingService {
 		Listing dbListing = opt.get();
 		dbListing.setTitle(listing.getTitle());
 		dbListing.setDescription(listing.getDescription());
+		dbListing.setRate(listing.getRate());
+		dbListing.setImageSrcs(listing.getImageSrcs());
 		dbListing.setModified(now);
 		Listing newListing = listingRepository.save(dbListing);
 		return ResponseEntity.ok(newListing);
@@ -105,5 +114,19 @@ public class ListingService {
 	public ResponseEntity<List<Listing>> searchListingLike(@RequestBody String titleQuery) {
 		List<Listing> listings = listingRepository.searchTitleLike(titleQuery);
 		return ResponseEntity.ok(listings);
+	}
+	
+	@PostMapping("/api/listing/{lid}/comment")
+	public ResponseEntity<Comment> addComment(@PathVariable("lid") int lid, @RequestBody Comment comment, HttpSession session) {
+		User user = (User) session.getAttribute("currentUser");
+		Optional<Listing> opt = listingRepository.findById(lid);
+		if (user == null || !opt.isPresent()) {
+			return ResponseEntity.badRequest().body(null);
+		}
+		comment.setListing(opt.get());
+		comment.setOwner(user);
+		comment.setCreated(new Date());
+		Comment newComment = commentRepository.save(comment);
+		return ResponseEntity.ok(newComment);
 	}
 }

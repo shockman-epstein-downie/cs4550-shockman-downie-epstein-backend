@@ -26,9 +26,21 @@ public class User {
 	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
 	@OneToMany(mappedBy="owner")
+	@JsonIgnore
 	private List<WorkRequest> workRequests;
 	@OneToMany(mappedBy="owner")
+	@JsonIgnore
 	private List<Listing> listings;
+	@OneToMany(mappedBy="owner")
+	@JsonIgnore
+	private List<BlogPost> blogPosts;
+	@OneToMany(mappedBy="owner")
+	@JsonIgnore
+	private List<Comment> comments;
+	@OneToMany(mappedBy="sender")
+	private List<Message> sentMessages;
+	@OneToMany(mappedBy="recipient")
+	private List<Message> receivedMessages;
 	
 	public int getId() {
 		return id;
@@ -78,5 +90,28 @@ public class User {
 	public void setListings(List<Listing> listings) {
 		this.listings = listings;
 	}
-	
+	public List<BlogPost> getBlogPosts() {
+		return blogPosts;
+	}
+	public void setBlogPosts(List<BlogPost> blogPosts) {
+		this.blogPosts = blogPosts;
+	}
+	public List<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+	public List<Message> getSentMessages() {
+		return sentMessages;
+	}
+	public void setSentMessages(List<Message> sentMessages) {
+		this.sentMessages = sentMessages;
+	}
+	public List<Message> getReceivedMessages() {
+		return receivedMessages;
+	}
+	public void setReceivedMessages(List<Message> receivedMessages) {
+		this.receivedMessages = receivedMessages;
+	}
 }
