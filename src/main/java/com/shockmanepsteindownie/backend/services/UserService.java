@@ -86,10 +86,27 @@ public class UserService {
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
-	
+		
 	@DeleteMapping("/api/user/{userId}")
 	public void deleteUser(@PathVariable("userId") int id) {
 		repository.deleteById(id);
+	}
+	
+	@PutMapping("/api/profile")
+	public ResponseEntity<User> updateProfile(@RequestBody User user, HttpSession session) {
+		User currentUser = (User) session.getAttribute("currentUser");
+		if (currentUser == null || currentUser.getId() != user.getId()) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+		User dbUser = repository.findUserByCredentials(user.getUsername());
+		if (user.getPassword() != null) {
+			dbUser.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+		}
+		dbUser.setName(user.getName());
+		dbUser.setDateOfBirth(user.getDateOfBirth());
+		User newUser = repository.save(dbUser);
+		session.setAttribute("currentUser", newUser);
+		return ResponseEntity.ok(newUser);
 	}
 	
 	@GetMapping("/api/profile")
