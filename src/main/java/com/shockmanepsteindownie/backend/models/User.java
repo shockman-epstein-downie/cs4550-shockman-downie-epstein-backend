@@ -41,11 +41,9 @@ public class User {
 	private List<Message> sentMessages;
 	@OneToMany(mappedBy="recipient")
 	private List<Message> receivedMessages;
-	private String twitterLink;
 	private String lat;
 	private String lon;
 	private String city;
-	
 	
 	public int getId() {
 		return id;
@@ -118,12 +116,6 @@ public class User {
 	}
 	public void setReceivedMessages(List<Message> receivedMessages) {
 		this.receivedMessages = receivedMessages;
-	}
-	public String getTwitterLink() {
-		return twitterLink;
-	}
-	public void setTwitterLink(String twitterLink) {
-		this.twitterLink = twitterLink;
 	}
 	public String getLat() {
 		return lat;
