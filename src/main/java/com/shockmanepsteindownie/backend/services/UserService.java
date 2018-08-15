@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -145,5 +146,22 @@ public class UserService {
 		}
 		List<WorkRequest> workRequests = workRequestRepository.getUserWorkRequests(currentUser.getId());
 		return ResponseEntity.ok(workRequests);
+	}
+	
+	
+	// @PathVariable("userId") int id
+	@PutMapping("/api/user/setLocation/{city}/{lat}/{lon}")
+	public ResponseEntity<User> setUserLocation(HttpSession session, @PathVariable("city") String city,
+			@PathVariable("lat") String lat, @PathVariable("lon") String lon) {
+		User currentUser = (User) session.getAttribute("currentUser");
+		if (currentUser == null) {
+			return ResponseEntity.badRequest().body(null);
+		}
+
+		currentUser.setCity(city);
+		currentUser.setLat(lat);
+		currentUser.setLon(lon);
+		return ResponseEntity.ok(repository.save(currentUser));
+		
 	}
 }
